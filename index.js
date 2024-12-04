@@ -1,4 +1,5 @@
 const url="https://homeless-shelters-and-foodbanks-api.p.rapidapi.com/resources";
+let map;
 const options = {
     method: 'GET',
     headers: {
@@ -6,7 +7,33 @@ const options = {
         'x-rapidapi-host': API_CONFIG.RAPIDAPI_HOST
     }
 };
-
+// Initialize the map
+function initializeMap(lat = 39.8283, lng = -98.5795, zoom = 4) {
+    if (map) {
+      map.remove(); // Clear existing map instance
+    }
+    map = L.map("map").setView([lat, lng], zoom);
+  
+    // Add OpenStreetMap tiles
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(map);
+  }
+  
+  // Add markers to the map
+  function addMarkers(data) {
+    data.forEach((item) => {
+      if (item.latitude && item.longitude) {
+        L.marker([item.latitude, item.longitude])
+          .addTo(map)
+          .bindPopup(`
+            <b>${item.name}</b><br>
+            ${item.description}<br>
+            <a href="${item.website}" target="_blank">Website</a>
+          `);
+      }
+    });
+  }
 document.getElementById("searchForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
@@ -31,7 +58,8 @@ document.getElementById("searchForm").addEventListener("submit", async function(
         }
         const data = await response.json();
         dataFunc(data);
-
+        initializeMap(); // Reset map to default view 
+        addMarkers(data); // Add markers for the search results
     }catch{
        resultDiv.innerHTML = `<p>error ${response.messege}</p>`;
     }
@@ -70,3 +98,4 @@ function dataFunc(data){
     });
 
 }
+initializeMap();
