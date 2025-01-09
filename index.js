@@ -3,8 +3,8 @@ let map;
 const options = {
     method: 'GET',
     headers: {
-        'x-rapidapi-key': API_CONFIG.RAPIDAPI_KEY,
-        'x-rapidapi-host': API_CONFIG.RAPIDAPI_HOST
+        'x-rapidapi-key': '5d98cc3dbfmshe4e059990bbd999p131003jsnddf74cda066e',//API_CONFIG.RAPIDAPI_KEY,
+        'x-rapidapi-host': 'homeless-shelters-and-foodbanks-api.p.rapidapi.com'//API_CONFIG.RAPIDAPI_HOST
     }
 };
 // Initialize the map
